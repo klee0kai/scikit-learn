@@ -9,9 +9,9 @@ def load_datasets(n=100):
     y = []
     for i in xrange(n):
         data_frame_X = load_data_frame_X()
-        x.append(data_frame_X)
-        y.append(load_data_frame_Y(data_frame_X))
-    return [np.array(x), np.array(y)]
+        x = x + list(data_frame_X)
+        y = y + list(load_data_frame_Y(data_frame_X))
+    return [x, y]
 
 
 def load_data_frame_X():
@@ -21,7 +21,7 @@ def load_data_frame_X():
     h = []
     for i in xrange(50):
         h = h + [countingH([x[i], y[i]], centPoint)]
-    return np.array([x, h])
+    return np.array([x, y, h])
 
 
 def load_data_frame_Y(data_frame_X):

@@ -1,0 +1,62 @@
+MultiOutputRegressor(estimator=GradientBoostingRegressor(alpha=0.9, criterion='friedman_mse', init=None,
+             learning_rate=0.05, loss='ls', max_depth=10,
+             max_features=None, max_leaf_nodes=None,
+             min_impurity_split=1e-07, min_samples_leaf=2,
+             min_samples_split=2, min_weight_fraction_leaf=0.0,
+             n_estimators=100, presort='auto', random_state=None,
+             subsample=1.0, verbose=0, warm_start=False),
+           n_jobs=1)
+
+datasetSize= 5000
+dataSetStep= 0.4
+learning_cicles= 1500
+test 0
+centrPoint= [0.98326965899552232, 0.77843158406339463]
+predictCentrPoint [ 0.97983496  0.78145411]
+err= [ 0.00343469 -0.00302252]
+
+test 1
+centrPoint= [0.24025362978002807, 0.27463630605753619]
+predictCentrPoint [ 0.24252333  0.27371336]
+err= [-0.0022697   0.00092295]
+
+test 2
+centrPoint= [0.19172012107938352, 0.31950145729956325]
+predictCentrPoint [ 0.19258274  0.31998163]
+err= [-0.00086262 -0.00048017]
+
+test 3
+centrPoint= [0.57941914666456773, 0.11969765243805586]
+predictCentrPoint [ 0.5760027  0.1236264]
+err= [ 0.00341645 -0.00392875]
+
+test 4
+centrPoint= [0.19407808344002897, 0.54020451336078368]
+predictCentrPoint [ 0.19598861  0.53898411]
+err= [-0.00191052  0.00122041]
+
+test 5
+centrPoint= [0.32883002648043735, 0.83529179905179807]
+predictCentrPoint [ 0.3324477   0.83206789]
+err= [-0.00361767  0.00322391]
+
+test 6
+centrPoint= [0.23633255823604649, 0.72349617909099195]
+predictCentrPoint [ 0.23324833  0.72355154]
+err= [  3.08423132e-03  -5.53579036e-05]
+
+test 7
+centrPoint= [0.35972045278379705, 0.95111304088340376]
+predictCentrPoint [ 0.35984273  0.94700275]
+err= [-0.00012228  0.00411029]
+
+test 8
+centrPoint= [0.3422400885248964, 0.66438046981273347]
+predictCentrPoint [ 0.34408801  0.66288   ]
+err= [-0.00184792  0.00150047]
+
+test 9
+centrPoint= [0.46257785673152396, 0.37113396570227075]
+predictCentrPoint [ 0.46054548  0.36884564]
+err= [ 0.00203237  0.00228833]
+

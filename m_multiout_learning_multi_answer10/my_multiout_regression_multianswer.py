@@ -1,3 +1,5 @@
+import os
+
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.utils import shuffle
@@ -7,9 +9,9 @@ import my_model_multi_out_multianswer as mModel
 print 'load dataset.....'
 
 # dataset = mModel.load_datasets(n=100000, pointsInFrame=20)
-datasetSize = 2
-dataSetStep = 0.5
-dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep)
+datasetSize = 20
+dataSetStep = 0.19
+dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep, maxPics=1)
 
 # Split the data into training/testing sets
 dataset_X_train = dataset[0][:-10]
@@ -34,8 +36,12 @@ pedictY = mrg.predict(dataset_X_test)
 predictY = list(pedictY)
 print str(predictY)
 
+folder = './test1/'
+if not os.path.exists(folder):
+    os.makedirs(folder)
+
 print 'print to log file.....'
-f1 = open('./log.txt', 'w+')
+f1 = open(folder + 'log.txt', 'w+')
 f1.write(str(mrg) + '\n' + '\n')
 f1.write('datasetSize= ' + str(datasetSize) + '\n')
 f1.write('dataSetStep= ' + str(dataSetStep) + '\n')
@@ -52,11 +58,10 @@ for i in xrange(len(pedictY)):
 f1.close()
 print 'drawing.....'
 
-for i in xrange(len(pedictY)):
+for i in xrange(len(dataset_X_test)):
     y = dataset_y_test[i]
     x = dataset_X_test[i]
-    predictY = pedictY[i]
-    mModel.draw_model(y, predictPoint=predictY, fileNameToSave='test_' + str(i), show=0)
-    mModel.draw_learning_model(y, x, fileNameToSave='learning_model_' + str(i), show=0)
+    mModel.draw_model(y, predictPoint=predictY, fileNameToSave=folder + 'test_' + str(i), show=0)
+    mModel.draw_training_model(x, y, fileNameToSave=folder + 'training_model_' + str(i), show=0)
 
 print 'finish.....'

@@ -1,15 +1,19 @@
 import os
-
+import cPickle
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.utils import shuffle
 from numpy import array
 import my_model_multi_out_multianswer as mModel
 
+folder = './testSave/'
+if not os.path.exists(folder):
+    os.makedirs(folder)
+
 print 'load dataset.....'
 
 # dataset = mModel.load_datasets(n=100000, pointsInFrame=20)
-datasetSize = 20
+datasetSize = 1000
 dataSetStep = 0.19
 dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep, maxPics=1)
 
@@ -21,24 +25,30 @@ dataset_X_test = dataset[0][-10:]
 dataset_y_train = dataset[1][:-10]
 dataset_y_test = dataset[1][-10:]
 
+# load it again
+# with open(folder + 'mrg.pkl', 'rb') as fid:
+#     mrg = cPickle.load(fid)
+
 mrg = MultiOutputRegressor(GradientBoostingRegressor(max_depth=10,
-                                                     learning_rate=.05, min_samples_leaf=2,
+                                                     learning_rate=.1, min_samples_leaf=2,
                                                      min_samples_split=2))
 
-learning_cicles = 1
+learning_cicles = 10
 for i in xrange(learning_cicles):
     dataset_X_train, dataset_y_train = shuffle(dataset_X_train, dataset_y_train)
     print 'training ' + str(i) + ' ..... '
     mrg.fit(dataset_X_train, dataset_y_train)
 
+print 'save neural network to disk.....'
+
+# save the classifier
+with open(folder + 'mrg.pkl', 'wb') as fid:
+    cPickle.dump(mrg, fid)
+
 print 'testing.....'
 pedictY = mrg.predict(dataset_X_test)
 predictY = list(pedictY)
 print str(predictY)
-
-folder = './test1/'
-if not os.path.exists(folder):
-    os.makedirs(folder)
 
 print 'print to log file.....'
 f1 = open(folder + 'log.txt', 'w+')

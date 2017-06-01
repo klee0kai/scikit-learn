@@ -3,12 +3,13 @@ import cPickle
 import datetime
 
 from sklearn.multioutput import MultiOutputRegressor
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import GradientBoostingRegressor, BaggingRegressor, AdaBoostRegressor, ExtraTreesRegressor, \
+    IsolationForest, RandomForestRegressor
 from sklearn.utils import shuffle
 from numpy import array
 import my_model_multi_out_multianswer as mModel
 
-folder = './testSpendTimeReport/'
+folder = './testBaggingRegressor1/'
 if not os.path.exists(folder):
     os.makedirs(folder)
 
@@ -31,9 +32,7 @@ dataset_y_test = dataset[1][-10:]
 # with open(folder + 'mrg.pkl', 'rb') as fid:
 #     mrg = cPickle.load(fid)
 
-mrg = MultiOutputRegressor(GradientBoostingRegressor(max_depth=10,
-                                                     learning_rate=.1, min_samples_leaf=2,
-                                                     min_samples_split=2))
+mrg = MultiOutputRegressor(BaggingRegressor())
 
 startTime = datetime.datetime.now()
 

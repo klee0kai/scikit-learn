@@ -4,6 +4,87 @@ from numpy import random
 from math import *
 
 
+# public
+def draw_model(centrPoints, predictPoints=[], fileNameToSave="", show=1):
+    box = np.arange(0, 1, 0.01)
+
+    y = []
+    x = []
+    for i in box:
+        y = y + list(np.linspace(i, i, len(box)))
+        x = x + list(box)
+    h = np.array(0)
+    for centrPoint in list(centrPoints[2 * i:i * 2 + 2] for i in xrange(len(centrPoints) / 2)):
+        h = h + np.array(countingHs(x + y, centrPoint))
+    h = h * 1. / max(h)
+    h = list(h)
+
+    colors = []
+    for i in xrange(len(h)):
+        red = h[i]
+        blue = (1. - sqrt(red)) / 5.
+        if (red < 0):
+            red = 0
+        if (blue > 1):
+            blue = 1
+        if (blue < 0):
+            blue = 0
+        colors.append([red, 0, blue])
+
+    plt.figure()
+    ax = plt.gca()
+    ax.scatter(x, y, s=200, c=colors, alpha=0.8, lw=0)
+    if predictPoints != []:
+        for predictPoint in list(predictPoints[2 * i:i * 2 + 2] for i in xrange(len(predictPoints) / 2)):
+            ax.scatter(predictPoint[0], predictPoint[1], s=200, c='blue', alpha=1, lw=0)
+
+    ax.set_xlim([0, 1])
+    ax.set_ylim([0, 1])
+    plt.draw()
+    if (fileNameToSave != ""):
+        plt.savefig(fileNameToSave + '.jpg')
+    if (show == 1):
+        plt.show()
+
+
+# public
+def draw_training_model(X, Y, show=1, fileNameToSave=""):
+    blockSize = len(X) / 3
+    x = X[0:blockSize]
+    y = X[blockSize:2 * blockSize]
+    h = X[2 * blockSize:3 * blockSize]
+
+    colors = []
+    for i in xrange(len(x)):
+        red = h[i]
+        blue = (1. - sqrt(red)) / 5.
+        if (red < 0):
+            red = 0
+        if (blue > 1):
+            blue = 1
+        if (blue < 0):
+            blue = 0
+        colors = colors + [[red, 0, blue]]
+
+    # prepare figure
+    plt.figure()
+    ax = plt.gca()
+    ax.scatter(x, y, s=50, c=colors, alpha=1, lw=0)
+
+    centrPoints = list(Y[2 * i:i * 2 + 2] for i in xrange(len(Y) / 2))
+    for centrP in centrPoints:
+        ax.scatter(centrP[0], centrP[1], s=200, c='red', alpha=1, lw=0)
+    ax.set_xlim([0, 1])
+    ax.set_ylim([0, 1])
+    plt.draw()
+    # save
+    if (fileNameToSave != ""):
+        plt.savefig(fileNameToSave + '.jpg')
+    if (show == 1):
+        plt.show()
+
+
+# public
 def load_datasets(n=20, pointsInFrame=100, maxPics=1, scaleByFrame=1.):
     x = []
     y = []
@@ -27,6 +108,7 @@ def load_datasets(n=20, pointsInFrame=100, maxPics=1, scaleByFrame=1.):
     return [x, y]
 
 
+# public
 def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1.):
     x = []
     y = []
@@ -48,6 +130,7 @@ def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1.):
     return [x, y]
 
 
+# private
 def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[]):
     box = np.arange(0, 1, step)
 
@@ -76,6 +159,7 @@ def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[
     return x + y + h
 
 
+# private
 def load_data_frame_X(countPoints=3, centPoint=list(random.rand(2)), scale=1.):
     x = list(random.rand(countPoints))
     y = list(random.rand(countPoints))
@@ -85,6 +169,7 @@ def load_data_frame_X(countPoints=3, centPoint=list(random.rand(2)), scale=1.):
     return [x + y + h]
 
 
+# private
 def load_data_frame_Y(data_frame_X):
     maxH = -10
     sX = 0
@@ -100,6 +185,7 @@ def load_data_frame_Y(data_frame_X):
     return [[sX, sY]]
 
 
+# private
 def color(point, centPoint):
     d = sqrt((point[0] - centPoint[0]) ** 2 + (point[1] - centPoint[1]) ** 2)
     red = (1 - d) ** 2
@@ -113,77 +199,20 @@ def color(point, centPoint):
     return [red, 0, blue]
 
 
+# private
 def countingH(point, centrPoint):
     d = sqrt((point[0] - centrPoint[0]) ** 2 + (point[1] - centrPoint[1]) ** 2)
     h = (1 - d) ** 2
     return h
 
-# TODO support multi centrPoints
-def draw_model(centrPoint, predictPoint=[-1, -1], fileNameToSave="", show=1):
-    box = np.arange(0, 1, 0.01)
 
-    y = []
-    x = []
-    for i in box:
-        y = y + list(np.linspace(i, i, len(box)))
-        x = x + list(box)
-
-    colors = []
-    for i in xrange(len(x)):
-        colors.append(color([x[i], y[i]], centrPoint))
-
-    xx = x
-    yy = y
-
-    x = np.asarray(xx)
-    y = np.asarray(yy)
-
-    plt.figure()
-    ax = plt.gca()
-    ax.scatter(x, y, s=200, c=colors, alpha=0.8, lw=0)
-    if (predictPoint[0] != -1):
-        ax.scatter(predictPoint[0], predictPoint[1], s=200, c='blue', alpha=1, lw=0)
-
-    ax.set_xlim([0, 1])
-    ax.set_ylim([0, 1])
-    plt.draw()
-    if (fileNameToSave != ""):
-        plt.savefig(fileNameToSave + '.jpg')
-    if (show == 1):
-        plt.show()
-
-
-def draw_training_model(X, Y, show=1, fileNameToSave=""):
-    blockSize = len(X) / 3
-    x = X[0:blockSize]
-    y = X[blockSize:2 * blockSize]
-    h = X[2 * blockSize:3 * blockSize]
-
-    colors = []
-    for i in xrange(len(x)):
-        red = h[i]
-        blue = (-sqrt(red) + 1.) * 5.
-        if (red < 0):
-            red = 0
-        if (blue > 1):
-            blue = 1
-        if (blue < 0):
-            blue = 0
-        colors = colors + [[red, 0, blue]]
-
-    # prepare figure
-    plt.figure()
-    ax = plt.gca()
-    ax.scatter(x, y, s=50, c=colors, alpha=1, lw=0)
-
-    centrPoints = list(Y[2 * i:i * 2 + 2] for i in xrange(len(Y) / 2))
-    for centrP in centrPoints:
-        ax.scatter(centrP[0], centrP[1], s=200, c='red', alpha=1, lw=0)
-    ax.set_xlim([0, 1])
-    ax.set_ylim([0, 1])
-    plt.draw()
-    # save
-    if (fileNameToSave != ""):
-        plt.savefig(fileNameToSave + '.jpg')
-    if (show == 1):
-        plt.show()
+# private
+def countingHs(points, centrPoint):
+    Xs = points[:len(points) / 2]
+    Ys = points[len(points) / 2:len(points)]
+    hs = []
+    for i in xrange(len(Xs)):
+        d = sqrt((Xs[i] - centrPoint[0]) ** 2 + (Ys[i] - centrPoint[1]) ** 2)
+        h = [(1 - d) ** 2]
+        hs = hs + h
+    return hs

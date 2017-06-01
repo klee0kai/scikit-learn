@@ -109,7 +109,7 @@ def load_datasets(n=20, pointsInFrame=100, maxPics=1, scaleByFrame=1.):
 
 
 # public
-def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1.):
+def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1., boxBorders=[0, 1]):
     x = []
     y = []
     for i in xrange(n):
@@ -118,7 +118,8 @@ def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1.):
         yFrame = [0] * (maxPics * 2)
         for j in xrange(1, counts + 1):
             centrP = list(random.rand(2))
-            xFrame = load_dataset_uniform_frame(step=step, centrPoint=centrP, lastDataFrame=xFrame)
+            xFrame = load_dataset_uniform_frame(step=step, centrPoint=centrP, lastDataFrame=xFrame,
+                                                boxBorders=boxBorders)
             yFrame[2 * (j - 1)] = centrP[0]
             yFrame[2 * (j - 1) + 1] = centrP[1]
             if (j == 1):
@@ -131,8 +132,8 @@ def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1.):
 
 
 # private
-def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[]):
-    box = np.arange(0, 1, step)
+def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[], boxBorders=[0, 1]):
+    box = np.arange(boxBorders[0], boxBorders[1], step)
 
     y = []
     x = []

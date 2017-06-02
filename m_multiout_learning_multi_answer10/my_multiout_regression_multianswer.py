@@ -23,10 +23,10 @@ print 'results in '+folder
 print 'load dataset.....'
 
 # dataset = mModel.load_datasets(n=100000, pointsInFrame=20)
-datasetSize = 500
-dataSetStep = 0.11
-dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep, maxPics=2, scaleByFrame=0.8,
-                                      boxBorders=[0.25, 0.75])
+datasetSize = 700
+dataSetStep = 0.066
+dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep, maxPics=3, scaleByFrame=0.8,
+                                      boxBorders=[0.1, 0.9])
 
 # Split the data into training/testing sets
 dataset_X_train = dataset[0][:-25]
@@ -45,7 +45,7 @@ mrg = MultiOutputRegressor(GradientBoostingRegressor())
 
 startTime = datetime.datetime.now()
 
-learning_cicles = 500
+learning_cicles = 1000
 for i in xrange(learning_cicles):
     dataset_X_train, dataset_y_train = shuffle(dataset_X_train, dataset_y_train)
     print 'training ' + str(i) + ' left: ' + str(learning_cicles - i) + ' ..... '
@@ -93,3 +93,4 @@ for i in xrange(len(dataset_X_test)):
     mModel.draw_training_model(x, y, fileNameToSave=folder + 'training_model_' + str(i), show=0)
 
 print 'finish.....'
+print 'results in '+folder

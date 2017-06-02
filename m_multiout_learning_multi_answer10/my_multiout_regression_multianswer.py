@@ -9,25 +9,25 @@ from sklearn.utils import shuffle
 from numpy import array
 import my_model_multi_out_multianswer as mModel
 
-folder = './testBoxBorders1/'
+folder = './testMultiAnswer2/'
 if not os.path.exists(folder):
     os.makedirs(folder)
 
 print 'load dataset.....'
 
 # dataset = mModel.load_datasets(n=100000, pointsInFrame=20)
-datasetSize = 100
+datasetSize = 500
 dataSetStep = 0.49
-dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep, maxPics=1, scaleByFrame=0.8,
+dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep, maxPics=2, scaleByFrame=0.8,
                                       boxBorders=[0.25, 0.75])
 
 # Split the data into training/testing sets
-dataset_X_train = dataset[0][:-10]
-dataset_X_test = dataset[0][-10:]
+dataset_X_train = dataset[0][:-25]
+dataset_X_test = dataset[0][-25:]
 
 # Split the targets into training/testing sets
-dataset_y_train = dataset[1][:-10]
-dataset_y_test = dataset[1][-10:]
+dataset_y_train = dataset[1][:-25]
+dataset_y_test = dataset[1][-25:]
 
 # load it again
 # with open(folder + 'mrg.pkl', 'rb') as fid:
@@ -38,7 +38,7 @@ mrg = MultiOutputRegressor(GradientBoostingRegressor())
 
 startTime = datetime.datetime.now()
 
-learning_cicles = 100
+learning_cicles = 500
 for i in xrange(learning_cicles):
     dataset_X_train, dataset_y_train = shuffle(dataset_X_train, dataset_y_train)
     print 'training ' + str(i) + ' left: ' + str(learning_cicles - i) + ' ..... '

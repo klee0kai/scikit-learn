@@ -45,6 +45,7 @@ def draw_model(centrPoints, predictPoints=[], fileNameToSave="", show=1):
         plt.savefig(fileNameToSave + '.jpg')
     if (show == 1):
         plt.show()
+    plt.close()
 
 
 # public
@@ -82,6 +83,7 @@ def draw_training_model(X, Y, show=1, fileNameToSave=""):
         plt.savefig(fileNameToSave + '.jpg')
     if (show == 1):
         plt.show()
+    plt.close()
 
 
 # public
@@ -126,6 +128,16 @@ def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1., boxBorders
                 for k in xrange(len(yFrame) / 2):
                     yFrame[2 * k] = centrP[0]
                     yFrame[2 * k + 1] = centrP[1]
+        for k in xrange(len(yFrame) / 2):
+            for j in xrange(k, len(yFrame) / 2):
+                if (yFrame[2 * k] > yFrame[2 * j] or yFrame[2 * k] == yFrame[2 * j] and yFrame[2 * k + 1] > yFrame[
+                            2 * j + 1]):
+                    G = [yFrame[2 * k], yFrame[2 * k + 1]]
+                    yFrame[2 * k] = yFrame[2 * j]
+                    yFrame[2 * k + 1] = yFrame[2 * j + 1]
+                    yFrame[2 * j] = G[0]
+                    yFrame[2 * j + 1] = G[1]
+
         x = x + [xFrame]
         y = y + [yFrame]
     return [x, y]

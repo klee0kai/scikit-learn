@@ -9,15 +9,22 @@ from sklearn.utils import shuffle
 from numpy import array
 import my_model_multi_out_multianswer as mModel
 
-folder = './testMultiAnswer2/'
+folder = './testMultiAnswer'
+folderPostFix = 0
+while (os.path.exists(folder + str(folderPostFix)+'/')):
+    folderPostFix = folderPostFix + 1
+folder = folder + str(folderPostFix)+'/'
+
 if not os.path.exists(folder):
     os.makedirs(folder)
+
+print 'results in '+folder
 
 print 'load dataset.....'
 
 # dataset = mModel.load_datasets(n=100000, pointsInFrame=20)
 datasetSize = 500
-dataSetStep = 0.49
+dataSetStep = 0.11
 dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep, maxPics=2, scaleByFrame=0.8,
                                       boxBorders=[0.25, 0.75])
 

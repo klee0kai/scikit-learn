@@ -75,7 +75,6 @@ def rating(state):
         sDx = sDx + abs(dx)
 
     sa = sa / len(state)
-    # print 'sr deviation a= ', abs(sa)
 
     # better more deviation
     pa = abs(sa) / 3.15
@@ -83,16 +82,16 @@ def rating(state):
     # max x deviation = 10
     sx = sx / len(state)
     # if (sx > 10): sx=10
-    px = (1 - sx / 10)
+    px = abs((1 - sx / 10))
 
     # max sDx deviation = 4
     sDx = sDx / len(state)
     # if (sDx >4): sDx=4
-    pDx = (1 - sDx / 4)
+    pDx = abs((1 - sDx / 4))
 
     p = (pa * 58 / 60 + px / 60 + pDx / 60)
-    # print 'rating count pa= ', pa, ' px= ', px, ' pdx= ', pDx, ' p = ', p
 
+    # best = 1, bad =0
+    rating = exp(-p)
 
-
-    return p
+    return rating

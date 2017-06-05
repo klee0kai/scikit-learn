@@ -38,8 +38,8 @@ def draw_model(predictPoints=[], boxBorders=[0, 1], fileNameToSave="", show=1):
         for predictPoint in list(predictPoints[2 * i:i * 2 + 2] for i in xrange(len(predictPoints) / 2)):
             ax.scatter(predictPoint[0], predictPoint[1], s=200, c='blue', alpha=1, lw=0)
 
-    ax.set_xlim([0, 1])
-    ax.set_ylim([0, 1])
+    ax.set_xlim([boxBorders[0], boxBorders[1]])
+    ax.set_ylim([boxBorders[0], boxBorders[1]])
     plt.draw()
     if (fileNameToSave != ""):
         plt.savefig(fileNameToSave + '.jpg')

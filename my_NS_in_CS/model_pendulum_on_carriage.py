@@ -5,9 +5,7 @@ from numpy import *
 
 # public
 def countingH(point):
-    k = array([0, 0, 0, 0])
-    for i in xrange(len(point)):
-        k[i] = point[i]
+    k = array([point[0], 0, point[1], 0])
     h = getRating(k)
     return h
 
@@ -58,8 +56,7 @@ def rating(state):
     sa = 0
     sx = 0
     sDx = 0
-    l = len(state)
-    for i in xrange(0, len(state)):
+    for i in xrange(len(state)):
         a = state[i][0]
         da = state[i][1]
         x = state[i][2]
@@ -95,5 +92,7 @@ def rating(state):
 
     p = (pa * 58 / 60 + px / 60 + pDx / 60)
     # print 'rating count pa= ', pa, ' px= ', px, ' pdx= ', pDx, ' p = ', p
+
+
 
     return p

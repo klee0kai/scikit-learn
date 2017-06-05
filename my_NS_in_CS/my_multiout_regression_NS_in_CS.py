@@ -21,6 +21,6 @@ print 'results in ' + folder
 if not os.path.exists(folder):
     os.makedirs(folder)
 
-mModel.draw_model(fileNameToSave=folder + 'map', show=0)
+mModel.draw_model(fileNameToSave=folder + 'map',boxBorders=[-50,50], show=0)
 
 print 'finish....'

@@ -53,7 +53,7 @@ def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[
 
     lH = []
     if (len(lastDataFrame) > 0):
-        lH = lastDataFrame[-len(lastDataFrame) / 3:]
+        lH = lastDataFrame[-len(lastDataFrame) / (dim+1):]
     h = []
     for i in xrange(len(transporatedPoints)):
         h = h + [countingH(transporatedPoints[i], centrPoint)]

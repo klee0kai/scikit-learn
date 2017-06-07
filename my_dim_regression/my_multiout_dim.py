@@ -21,13 +21,14 @@ print 'results in ' + folder
 print 'load dataset.....'
 
 # dataset = mModel.load_datasets(n=100000, pointsInFrame=20)
-datasetSize = 5000
-dataSetStep = 0.11
+datasetSize = 100000
+dataSetStep = 0.99
 boxBorders = [0, 1]
 maxPics = 1
-dim = 3
+dim = 4
+topAndBottomRandom =0.7
 dataset = mModel.load_dataset_uniform(n=datasetSize, step=dataSetStep, maxPics=maxPics, scaleByFrame=1,
-                                      boxBorders=boxBorders, dim=dim)
+                                      boxBorders=boxBorders, dim=dim,topAndBottomRandom=topAndBottomRandom)
 
 # Split the data into training/testing sets
 dataset_X_train = dataset[0][:-25]
@@ -80,7 +81,8 @@ f1.write('datasetSize= ' + str(datasetSize) + '\n')
 f1.write('dataSetStep= ' + str(dataSetStep) + '\n')
 f1.write('boxBorders= ' + str(boxBorders) + '\n')
 f1.write('maxPics= ' + str(maxPics) + '\n')
-f1.write('dim = ' + str(dim))
+f1.write('dim = ' + str(dim)+'\n')
+f1.write('topAndBottomRandom = '+str(topAndBottomRandom)+'\n')
 f1.write('spended time: ' + str(elapsedTime) + '\n\n')
 
 for i in xrange(len(predictYs)):

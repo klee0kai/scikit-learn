@@ -5,7 +5,7 @@ from math import *
 
 
 # public
-def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1., boxBorders=[0, 1], dim=2):
+def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1., boxBorders=[0, 1], dim=2, topAndBottomRandom=1):
     x = []
     y = []
     for i in xrange(n):
@@ -15,7 +15,7 @@ def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1., boxBorders
         for j in xrange(1, counts + 1):
             centrP = list(random.rand(dim))
             xFrame = load_dataset_uniform_frame(step=step, centrPoint=centrP, lastDataFrame=xFrame,
-                                                boxBorders=boxBorders)
+                                                boxBorders=boxBorders, topAndBottomRandom=topAndBottomRandom)
             for k in xrange(dim):
                 yFrame[2 * (j - 1) + k] = centrP[k]
             if (j == 1):
@@ -41,7 +41,8 @@ def load_dataset_uniform(n=20, step=0.01, maxPics=1, scaleByFrame=1., boxBorders
 
 
 # private
-def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[], boxBorders=[0, 1]):
+def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[], boxBorders=[0, 1],
+                               topAndBottomRandom=1):
     box = np.arange(boxBorders[0], boxBorders[1], step)
 
     dim = len(centrPoint)
@@ -53,7 +54,7 @@ def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[
 
     lH = []
     if (len(lastDataFrame) > 0):
-        lH = lastDataFrame[-len(lastDataFrame) / (dim+1):]
+        lH = lastDataFrame[-len(lastDataFrame) / (dim + 1):]
     h = []
     for i in xrange(len(transporatedPoints)):
         h = h + [countingH(transporatedPoints[i], centrPoint)]
@@ -63,9 +64,12 @@ def load_dataset_uniform_frame(step=0.01, centrPoint=[0.5, 0.5], lastDataFrame=[
         lH = np.array(lH)
         h = h + lH
         # normalize
-        scale = 1. / max(h)
-        h = h * scale
-        h = list(h)
+    h = np.array(h)
+    scale = 1. / max(h)
+    fracTop = random.rand()
+    scale = scale * (random.rand() * (1 - topAndBottomRandom) + topAndBottomRandom * fracTop)
+    h = h * scale
+    h = list(h)
 
     outPoints = []
     for i in xrange(len(points)):

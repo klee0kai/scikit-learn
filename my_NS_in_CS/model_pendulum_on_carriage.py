@@ -5,7 +5,7 @@ from numpy import *
 
 # public
 def countingH(point):
-    k = array([point[0], 0, point[1], 0])
+    k = array(point)
     h = getRating(k)
     return h
 
@@ -92,6 +92,6 @@ def rating(state):
     p = (pa * 58 / 60 + px / 60 + pDx / 60)
 
     # best = 1, bad =0
-    rating = exp(-p)
+    rating = exp(-10*p)
 
     return rating

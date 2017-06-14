@@ -54,44 +54,29 @@ def pendulumOnCarriage(state, t, k):
 # private
 def rating(state):
     sa = 0
+    sDa = 0
     sx = 0
     sDx = 0
     for i in xrange(len(state)):
-        a = state[i][0]
-        da = state[i][1]
-        x = state[i][2]
-        dx = state[i][3]
-        # align alpha
-        d = a / 6.28
-        d = round(d)
-        a = abs(a - d * 6.28)
-        # counting sum deviation alpha
-        deviationA = abs(3.14 - a)
-        # print 'stateA = ',state[i][0], 'a = ',a,'deviation a= ',deviationA
-        # (exp(deviationA)-1)*3.14/22.1039 - prioritization deviation alpha
-        sa = sa + (exp(deviationA) - 1) * 3.14 / 22.1039
-        # sum x,dx,da
-        sx = sx + abs(x)
-        sDx = sDx + abs(dx)
+        a = abs(state[i][0])
+        da = abs(state[i][1])
+        x = abs(state[i][2])
+        dx = abs(state[i][3])
+
+        sa = sa + a
+        sDa = sDa + da
+        sx = sx + x
+        sDx = sDx + dx
 
     sa = sa / len(state)
-
-    # better more deviation
-    pa = abs(sa) / 3.15
-
-    # max x deviation = 10
     sx = sx / len(state)
-    # if (sx > 10): sx=10
-    px = abs((1 - sx / 10))
 
-    # max sDx deviation = 4
-    sDx = sDx / len(state)
-    # if (sDx >4): sDx=4
-    pDx = abs((1 - sDx / 4))
+    l = len(state)
+    sa = sa / l
+    sDa = sDa / l
+    sx = sx / l
+    sDx = sDx / l
 
-    p = (pa * 58 / 60 + px / 60 + pDx / 60)
+    p = (sa * 100 + sx + sDa + sDx)
 
-    # best = 1, bad =0
-    rating = exp(-10*p)
-
-    return rating
+    return 1. / (p + 1.)

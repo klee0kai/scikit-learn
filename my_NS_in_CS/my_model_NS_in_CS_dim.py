@@ -64,9 +64,10 @@ def denormalise(a, min, max):
 
 
 def denormalisePoint(point, border):
+    outPoint = []
     for i in xrange(len(point)):
-        point[i] = denormalise(point[i], border[2 * i], border[2 * i + 1])
-    return point
+        outPoint = outPoint + [denormalise(point[i], border[2 * i], border[2 * i + 1])]
+    return outPoint
 
 
 # private
